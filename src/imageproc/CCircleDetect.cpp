@@ -278,6 +278,32 @@ int CCircleDetect::identifySegment(SSegment* inner,CRawImage* image)
 		signal[a] += ptr[(pos+0)*3+2]*(1-gx)*(1-gy)+ptr[(pos+1)*3+2]*gx*(1-gy)+ptr[(pos+image->width)*3+2]*(1-gx)*gy+ptr[3*(pos+(image->width+1))+2]*gx*gy;
 	}
 
+// ======================================= 
+
+// http://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+
+	float sum = 0.;
+	float mean = 0.;
+	float deviation=0.;
+
+	for ( int i = 0; i <=ID_SAMPLES; i++ )
+	{
+		sum += signal[i];
+	}
+	mean=sum/ID_SAMPLES;
+
+	sum = 0;
+	for ( int i = 0; i <=ID_SAMPLES; i++ )
+	{
+		sum += pow((signal[i]-mean), 2.0);
+	}
+	
+	deviation= sqrt(sum/(ID_SAMPLES-1));
+	
+	printf("MEAN:%0.3f\n", mean);
+	printf("STANDARD: %0.3f\n", deviation);
+
+
 	//calculate signal gradient 
 	for (int a = 1;a<ID_SAMPLES;a++) differ[a] = signal[a]-signal[a-1];  
 	differ[0] = signal[0] - signal[ID_SAMPLES-1];
@@ -297,6 +323,7 @@ int CCircleDetect::identifySegment(SSegment* inner,CRawImage* image)
 			maxIndex = a; 
 		}
 	}
+	printf("strength%f\n", strength);
 
 	//and determine the following edges
 	int a = 1;

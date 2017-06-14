@@ -12,6 +12,8 @@ CNecklace::CNecklace(int bits,int minimalHamming = 1)
 	int hamindex = 1000;
 	int ham = 1000;
 	debug = false;
+	maxID = -1;
+	int tempCounter = 0;
 
 	/*for every possible id*/
 	for (int id = 0;id<idLength;id++)
@@ -79,7 +81,22 @@ CNecklace::CNecklace(int bits,int minimalHamming = 1)
 		{
 			idArray[id].id = -1;
 			idArray[id].rotation = -1;
-		} 
+		}
+
+		if(idArray[id].id+1 > maxID)
+		{
+			maxID = idArray[id].id+1;
+		}
+		
+		idArray[id].confidence = 1./(float)idLength;
+		
+		printf("index, confidence: %i: %.9f\n", ++tempCounter, idArray[id].confidence); 
+		printf("currentID, MaxID: %i  %i\n", currentID, maxID);
+	}
+
+	for (int i = 0; i < idLength; i++)
+	{
+		idArray[i].confidence = 1./maxID;
 	}
 
 	//idArray[idLength-1].id = 0;
@@ -174,6 +191,75 @@ int CNecklace::verifyHamming(int a[],int bits,int len)
 
 SNecklace CNecklace::get(int sequence)
 {
-    if (sequence > 0 && sequence < idLength) return idArray[sequence];
-    return unknown;
+    if (sequence > 0 && sequence < idLength) //return idArray[sequence];
+    { 
+    	updateProbability(idArray[sequence].id);
+	}
+	return getEstimatedID();
+}
+
+float CNecklace::observationEstimation(SNecklace i)
+{
+	return 0.6;
+}
+
+SNecklace CNecklace::getEstimatedID()
+{
+	int highestPosition = 0;
+	for (int i = 0; i < idLength; i++)
+	{
+            if(idArray[idLength].confidence > idArray[idLength].confidence)
+            {
+                    highestPosition = i;
+            }
+	}
+	return idArray[highestPosition];
+}
+
+void CNecklace::updateProbability(int id)
+{
+	// p(s|o) = (p(o|s) / p(o)) / p(s)
+	
+	// p(s|o) = ( p(o|s) / ( E p(o|s) * p(s) ) ) / p(s)
+
+	// float s  = 0.; // p(s):     Current Probability of state (prior probability) (our idArray[i].confidence)
+	float o  = 0.; // p(o):     Sum of p(o|s)*p(s)
+	// float os = 0.6;// p(o|s):   A function fitting the data model (for learning purposed we will hard code 0.6)
+	// float so = 0.; // p(s|o):   Posterior probability (the new probability of a state)
+
+	for (int i = 0; i < idLength; i++)
+	{
+            if (id == i)
+            {
+                o += observationEstimation(idArray[i])*idArray[i].confidence;
+            }
+            else 
+            {
+                o += 1.0-observationEstimation(idArray[i])/(idLength-1)*idArray[i].confidence;
+            }
+	}
+
+	float sum = 0;
+
+	for (int i = 0; i < idLength; i++)
+	{
+            if (id ==i)
+            {
+                idArray[i].confidence = (observationEstimation(idArray[i])/*/o*/)*idArray[i].confidence; 
+            }
+            else
+            {
+                idArray[i].confidence = (1.0-observationEstimation(idArray[i]))/(idLength-1)/*/o*/*idArray[i].confidence;
+            }
+            sum+=idArray[i].confidence;
+//            printf("%.3f\n", sum);
+	}
+//	if(fabs(sum - o) < 0.1)
+//	{
+//		printf("THIS WORKED %f %f\n", sum, o);
+//	}
+//	else
+//	{
+//		printf("THIS FAILED %f %f\n", sum, o);		
+//	}
 }
