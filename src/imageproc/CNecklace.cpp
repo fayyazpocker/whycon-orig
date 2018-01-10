@@ -79,7 +79,7 @@ CNecklace::CNecklace(int bits,int minimalHamming = 1)
 	unknown.rotation = -1;
 
 	for (int i = 0; i < idLength; i++) if(maxID < idArray[i].id) maxID = idArray[i].id;
-	probArray = (float*)malloc(sizeof(float)*maxID+1);
+	probArray = (float*)malloc(sizeof(float)*maxID);
 	for (int id = 0; id < maxID; id++) probArray[id] = 1./(float)maxID;
 }
 
@@ -153,7 +153,7 @@ int CNecklace::verifyHamming(int a[],int bits,int len)
 
 SNecklace CNecklace::get(int sequence, bool probabilistic, float confidence)
 {
-	if (sequence < 0 || sequence > idLength) return unknown;
+	if (sequence <= 0 || sequence >= idLength) return unknown;
 	if(! probabilistic) return idArray[sequence];
 
 	float oe = observationEstimation(confidence);
