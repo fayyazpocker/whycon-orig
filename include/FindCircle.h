@@ -22,8 +22,6 @@
 #include <map>
 #include <string>
 
-#define MAX_PATTERNS 20
-
 class FindCircle {
 public:
 

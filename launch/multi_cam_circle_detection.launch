@@ -7,30 +7,74 @@
     <arg name="user" default="" />
 
 
-    <node name="rightHandCamSetup" pkg="baxter_tools" type="camera_control.py" required="false" output="screen" args="-o right_hand_camera -r 1280x800"/>
 
-    <node name="leftHandCamSetup" pkg="baxter_tools" type="camera_control.py" required="false" output="screen" args="-o left_hand_camera -r 1280x800"/>
+
+<!--  ns="left_circle_finder"  -->
+<node pkg="circle_detection" type="circle_finder" name="left_circle_finder" output="screen">
+    <remap from="/camera/image_rect_color" to="/left/hd/image_color" />
+    <remap from="/camera/camera_info" to="/left/hd/camera_info" />
+
+    <param name="circle_diameter" value="0.0295"/>
+    <param name="identify" value="True"/>
+</node>
+
+<!--  ns="right_circle_finder"  -->
+<node pkg="circle_detection" type="circle_finder" name="right_circle_finder" output="screen">
+    <remap from="/camera/image_rect_color" to="/right/hd/image_color" />
+    <remap from="/camera/camera_info" to="/right/hd/camera_info" />
+
+    <param name="circle_diameter" value="0.0295"/>
+    <param name="identify" value="True"/>
+</node>
+
+
+<!-- <node ns="left_april" pkg="apriltags_ros" type="apriltag_detector_node" name="left_april" output="screen">
+    <remap from="image_rect" to="/left/qhd/image_color" />
+    <remap from="camera_info" to="/left/qhd/camera_info" />
+    <remap from="tag_detections_image" to="/left_april/tag_detections_image" />
+
+    <param name="image_transport" type="str" value="raw" />
+    <param name="projected_optics" type="bool" value="true" />
+    <param name="tf_prefix" value="left_april_"/>
+    </rosparam>
+
+    </node> -->
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <node name="rightHandCamSetup" pkg="baxter_tools" type="camera_control.py" required="false" output="screen" args="-o right_hand_camera -r 1280x800"/> -->
+
+    <!-- <node name="leftHandCamSetup" pkg="baxter_tools" type="camera_control.py" required="false" output="screen" args="-o left_hand_camera -r 1280x800"/> -->
 
     <!-- start circle detection and tracking for left camera -->
-    <node name="LeftHandCircleFinder" pkg="circle_detection" type="circle_finder" required="true" output="screen">
+<!--     <node name="LeftHandCircleFinder" pkg="circle_detection" type="circle_finder" required="true" output="screen">
         <param name="camera" type="str" value="left" />
-    </node>
+    </node> -->
 
 
     <!-- start circle detection and tracking for right camera -->
-    <node name="RightHandCircleFinder" pkg="circle_detection" type="circle_finder" required="true" output="screen">
+<!--     <node name="RightHandCircleFinder" pkg="circle_detection" type="circle_finder" required="true" output="screen">
         <param name="camera" type="str" value="right" />
-    </node>
+    </node> -->
 
     <!-- view procesed image from left circle tracker  -->
-    <node name="view_left" pkg="image_view" type="image_view" required="true">
+<!--     <node name="view_left" pkg="image_view" type="image_view" required="true">
         <remap from="image" to="/circledetection/left/rgb/processedimage"/>
-    </node>
+    </node> -->
 
     <!-- view procesed image from right circle tracker  -->
-    <node name="view_right" pkg="image_view" type="image_view" required="true">
+<!--     <node name="view_right" pkg="image_view" type="image_view" required="true">
         <remap from="image" to="/circledetection/right/rgb/processedimage"/>
-    </node>
+    </node> -->
     
     <!-- start bayes people tracker for 3D tracking  -->
     <!-- <include file='$(find bayes_people_tracker)/launch/people_tracker.launch'>

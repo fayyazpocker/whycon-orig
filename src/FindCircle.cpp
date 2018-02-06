@@ -21,12 +21,16 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
         if (currentSegmentArray[i].valid) {
             objectArray[i] = trans->transform(currentSegmentArray[i]);
             // Filter error values
-            if (isnan(objectArray[i].x)) continue;
-            if (isnan(objectArray[i].y)) continue;
-            if (isnan(objectArray[i].z)) continue;
-            if (isnan(objectArray[i].roll)) continue;
-            if (isnan(objectArray[i].pitch)) continue;
-            if (isnan(objectArray[i].yaw)) continue;
+            if (isnan(objectArray[i].x)||
+                isnan(objectArray[i].y) ||
+                isnan(objectArray[i].z) ||
+                isnan(objectArray[i].roll) ||
+                isnan(objectArray[i].pitch) ||
+                isnan(objectArray[i].yaw))
+            {
+                printf("%s\n","SKIPPING NAN");
+                continue;
+            }
 
             // temp value to hold current detection
             circle_detection::detection_results objectsToAdd;
