@@ -12,10 +12,26 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
     circle_detection::detection_results_array tracked_objects;
     tracked_objects.header = msg->header;
     visualization_msgs::MarkerArray marker_list;
-    //search image for circles
+
+    for (int i = 0;i<MAX_PATTERNS;i++){
+        if (currentSegmentArray[i].valid){
+            lastSegmentArray[i] = currentSegmentArray[i];
+            currentSegmentArray[i] = detectorArray[i]->findSegment(image,lastSegmentArray[i]);
+        }
+    }
+
+    //search for untracked (not detected in the last frame) robots
+    for (int i = 0;i<MAX_PATTERNS;i++){
+        if (currentSegmentArray[i].valid == false){
+            lastSegmentArray[i].valid = false;
+            currentSegmentArray[i] = detectorArray[i]->findSegment(image,lastSegmentArray[i]);
+        }
+        //does not make sense to search for more patterns if the last one was not found
+        if (currentSegmentArray[i].valid == false) break;
+    }
+
+    // //search image for circles
     for (int i = 0; i < MAX_PATTERNS; i++) {
-        lastSegmentArray[i] = currentSegmentArray[i];
-        currentSegmentArray[i] = detectorArray[i]->findSegment(image, lastSegmentArray[i]);
         objectArray[i].valid = false;
 
         if (currentSegmentArray[i].valid) {

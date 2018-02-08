@@ -10,7 +10,7 @@
 #define COLOR_STEP 8
 #define INNER 0
 #define OUTER 1
-#define MAX_PATTERNS 3
+#define MAX_PATTERNS 20
 
 //used for circle identification 
 #define ID_SAMPLES 360
