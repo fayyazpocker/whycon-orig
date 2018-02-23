@@ -22,8 +22,8 @@ CCircleDetect::CCircleDetect(int wi, int he, bool id) {
     maxThreshold = 256;
     centerDistanceToleranceRatio = 0.1;
     centerDistanceToleranceAbs = 5;
-    circularTolerance = 0.3;
-    ratioTolerance = 1.4;
+    circularTolerance = 1.3;
+    ratioTolerance = 0.4;
     threshold = maxThreshold / 2;
     numFailed = maxFailed;
     track = true;
@@ -41,7 +41,7 @@ CCircleDetect::CCircleDetect(int wi, int he, bool id) {
         SSegment dummy;
         bufferCleanup(dummy);
     }
-    diameterRatio = 5.0 / 14.0; //inner vs. outer circle diameter 
+    diameterRatio = 33.0 / 70.0; //inner vs. outer circle diameter
     float areaRatioInner_Outer = diameterRatio*diameterRatio;
     outerAreaRatio = M_PI * (1.0 - areaRatioInner_Outer) / 4;
     innerAreaRatio = M_PI / 4.0;
@@ -427,7 +427,12 @@ SSegment CCircleDetect::findSegment(CRawImage* image, SSegment init) {
         if (changeThreshold()==false) numFailed = 0;
         if (debug) drawAll = true;
     }
+
     if (outer.valid && identify){
+        inner.x = outer.x;
+        inner.y = outer.y;
+        inner.m0 = 0.33/0.70*outer.m0;
+        inner.m1 = 0.33/0.70*outer.m1;
         int segment = identifySegment(&inner,image);
         if (debug) printf("SEGMENT ID: %i\n", segment);
         outer.angle = init.angle;
