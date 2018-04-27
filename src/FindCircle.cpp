@@ -51,6 +51,8 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
             // temp value to hold current detection
             circle_detection::detection_results objectsToAdd;
 
+            if(identify) objectsToAdd.uuid = objectArray[i].id;
+            if(identify && objectsToAdd.uuid <= 0) continue;
             // Convert to ROS standard Coordinate System
             objectsToAdd.pose.position.x = -objectArray[i].y;
             objectsToAdd.pose.position.y = -objectArray[i].z;
@@ -63,7 +65,6 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
             objectsToAdd.pose.orientation.y = q.getY();
             objectsToAdd.pose.orientation.z = q.getZ();
             objectsToAdd.pose.orientation.w = q.getW();
-            if(identify) objectsToAdd.uuid = objectArray[i].id;
             objectsToAdd.roundness = objectArray[i].roundness;
             objectsToAdd.bwratio = objectArray[i].bwratio;
             objectsToAdd.esterror = objectArray[i].esterror;
@@ -91,6 +92,10 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
             marker.color.b = 0.0;
             marker.lifetime = ros::Duration(0.2);
             marker_list.markers.push_back(marker);
+
+            // tfTransformer.setOrigin( tf::Vector3(objectsToAdd.pose.position.x, objectsToAdd.pose.position.y, objectsToAdd.pose.position.z) );
+            // tfTransformer.setRotation(q);
+            // tfBroadcaster.sendTransform(tf::StampedTransform(tfTransformer, ros::Time::now(), msg->header.frame_id, "tag_" + objectArray[i].id));
         }
     }
     // Check if no markers were found
@@ -136,7 +141,6 @@ void FindCircle::init(void) {
     imdebug = it.advertise("/" + node_name+ "/processedimage", 0);
     tracks_pub = nh->advertise<circle_detection::detection_results_array>("/" + node_name + "/tracking_Array", 0);
     vis_pub = nh->advertise<visualization_msgs::MarkerArray>("/" + node_name + "/rviz_marker", 0);
-    lookup = new tf::TransformListener();
     ROS_DEBUG("Server running");
     ros::spin();
 }

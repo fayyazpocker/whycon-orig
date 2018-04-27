@@ -14,18 +14,61 @@
     <remap from="/camera/image_rect_color" to="/left/hd/image_color" />
     <remap from="/camera/camera_info" to="/left/hd/camera_info" />
 
-    <param name="circle_diameter" value="0.0295"/>
+    <param name="circle_diameter" value="0.033"/>
     <param name="identify" value="True"/>
 </node>
 
-<!--  ns="right_circle_finder"  -->
 <node pkg="circle_detection" type="circle_finder" name="right_circle_finder" output="screen">
+    <remap from="/camera/image_rect_color" to="/right/hd/image_color" />
+    <remap from="/camera/camera_info" to="/right/hd/camera_info" />
+
+    <param name="circle_diameter" value="0.033"/>
+    <param name="identify" value="True"/>
+</node>
+
+
+<node pkg="circle_detection" type="circle_finder" name="baxter_left_circle_finder" output="screen">
+    <remap from="/camera/image_rect_color" to="/cameras/left_hand_camera/image" />
+    <remap from="/camera/camera_info" to="/cameras/left_hand_camera/camera_info" />
+
+    <param name="circle_diameter" value="0.033"/>
+    <param name="identify" value="True"/>
+</node>
+
+<node pkg="circle_detection" type="circle_finder" name="baxter_right_circle_finder" output="screen">
+    <remap from="/camera/image_rect_color" to="/cameras/right_hand_camera/image" />
+    <remap from="/camera/camera_info" to="/cameras/right_hand_camera/camera_info" />
+
+    <param name="circle_diameter" value="0.033"/>
+    <param name="identify" value="True"/>
+</node>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  ns="right_circle_finder"  -->
+<!-- <node pkg="circle_detection" type="circle_finder" name="right_circle_finder" output="screen">
     <remap from="/camera/image_rect_color" to="/right/hd/image_color" />
     <remap from="/camera/camera_info" to="/right/hd/camera_info" />
 
     <param name="circle_diameter" value="0.0295"/>
     <param name="identify" value="True"/>
-</node>
+</node> -->
 
 
 <!-- <node ns="left_april" pkg="apriltags_ros" type="apriltag_detector_node" name="left_april" output="screen">
