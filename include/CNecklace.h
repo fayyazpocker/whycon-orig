@@ -17,8 +17,7 @@ class CNecklace{
         CNecklace(int bits,int minimalHamming = 1);
         ~CNecklace();
         SNecklace get(int sequence, bool probabilistic=true, float confidence=1.0);
-        int getEstimatedID();
-		int verifyHamming(int a[],int bits,int len);
+        int verifyHamming(int a[],int bits,int len);
         float observationEstimation(float confidence);
 
     private:
@@ -29,7 +28,8 @@ class CNecklace{
         SNecklace *idArray;
         float* probArray;
         SNecklace unknown;
-	int getHamming(int a, int b);
-	int getMinimalHamming(int a,int len);
+        int getEstimatedID();
+        int getHamming(int a, int b);
+        int getMinimalHamming(int a,int len);
 };
 #endif

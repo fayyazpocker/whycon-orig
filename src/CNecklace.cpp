@@ -199,8 +199,9 @@ int CNecklace::getEstimatedID()
 	int hp = 0;
 	for (int id = 0; id < maxID; id++)
 	{
-		printf("%i %f\n", id, probArray[id]);
+		if (debug) printf("%i %f\n", id, probArray[id]);
         if(probArray[id] > probArray[hp]) hp = id;
 	}
+	// printf("%i\n", hp+1);
 	return hp;
 }
