@@ -18,12 +18,12 @@ CCircleDetect::CCircleDetect(int wi, int he, bool id) {
     draw = true;
     drawAll = true;
     maxFailed = 0;
-    minSize = 10;
+    minSize = 100;
     maxThreshold = 256;
-    centerDistanceToleranceRatio = 0.1;
+    centerDistanceToleranceRatio = 0.01;
     centerDistanceToleranceAbs = 5;
-    circularTolerance = 1.3;
-    ratioTolerance = 0.4;
+    circularTolerance = 0.8; // 1.4
+    ratioTolerance = 0.8; // 1.4
     threshold = maxThreshold / 2;
     numFailed = maxFailed;
     track = true;
@@ -433,7 +433,7 @@ SSegment CCircleDetect::findSegment(CRawImage* image, SSegment init) {
         inner.y = outer.y;
         inner.m0 = 0.33/0.70*outer.m0;
         inner.m1 = 0.33/0.70*outer.m1;
-        int segment = identifySegment(&inner,image);
+        int segment = identifySegment(&inner,image)+1;
         if (debug) printf("SEGMENT ID: %i\n", segment);
         outer.angle = init.angle;
         outer.ID = init.ID;
@@ -606,5 +606,5 @@ int CCircleDetect::identifySegment(SSegment* inner,CRawImage* image) {
 
         }
     }
-    return result.id; 
+    return result.id++;
 }
