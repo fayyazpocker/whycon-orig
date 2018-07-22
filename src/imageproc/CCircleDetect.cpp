@@ -25,7 +25,7 @@ CCircleDetect::CCircleDetect(int wi,int he,int idi)
 	localSearch = false;				//by default, search for the pattern eveywhere, true is used when position of the pattern is indicated by a click
 	ID = idi;					//pattern ID - not used in this case	
 	numberIDs =0;					//pattern ID - not used in this case	
-	enableCorrections = false;			//enables brightness compensation, see 3.5 of [1]
+	enableCorrections = true;			//enables brightness compensation, see 3.5 of [1]
 	lastTrackOK = false;				//was the pattern detected in the previous step ? used to initiate the search position
 	debug = 0;					//debug level 
 	draw = false; 					//draw the detected segments in bright colors to indicate segmentation results
