@@ -359,7 +359,7 @@ int CCircleDetect::identifySegment(SSegment* inner,CRawImage* image)
 		}
 	}
 	realCode[ID_BITS] = 0;
-	if (debug){
+	if (debug>0){
 		printf("ORIG: ");
 		for (int a = 0;a<ID_SAMPLES;a++)printf("%.2f ",signal[a]);
 		printf("\n");
@@ -370,8 +370,7 @@ int CCircleDetect::identifySegment(SSegment* inner,CRawImage* image)
 	inner->angle = 2*M_PI*(-(float)maxIndex/ID_SAMPLES+(float)result.rotation/ID_BITS)+atan2(inner->v1,inner->v0)+1.5*M_PI/ID_BITS; 
 	while (inner->angle > +M_PI)  inner->angle-=2*M_PI; 
 	while (inner->angle < -M_PI)  inner->angle+=2*M_PI; 
-	printf("CODE %i %i %i %i %s %s %.3f %.3f\n",result.id,result.rotation,maxIndex,ID,realCode,code,inner->angle,atan2(inner->v1,inner->v0));
-	//printf("CODE %i %.3f\n",result.id,inner->angle);
+	if(debug>0) printf("CODE %i %i %i %i %s %s %.3f %.3f\n",result.id,result.rotation,maxIndex,ID,realCode,code,inner->angle,atan2(inner->v1,inner->v0));
 	for (int a = 0;a<ID_SAMPLES;a++){
 		pos = ((int)x[a]+((int)y[a])*image->width);
 		if (pos > 0 && pos < image->width*image->height){	
