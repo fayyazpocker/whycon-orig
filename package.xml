@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>circle_detection</name>
+  <name>whycon</name>
   <version>0.0.14</version>
   <description> Object detection using circles </description>
 

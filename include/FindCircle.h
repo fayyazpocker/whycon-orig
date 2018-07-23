@@ -13,8 +13,8 @@
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <tf/transform_broadcaster.h>
-#include "circle_detection/detection_results.h"
-#include "circle_detection/detection_results_array.h"
+#include "whycon/detection_results.h"
+#include "whycon/detection_results_array.h"
 #include <tf/transform_listener.h>
 #include <tf/transform_datatypes.h>
 #include <sensor_msgs/Image.h>

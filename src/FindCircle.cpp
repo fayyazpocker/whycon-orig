@@ -9,7 +9,7 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
 
     memcpy(image->data, (void*) &msg->data[0], msg->step * msg->height);
 
-    circle_detection::detection_results_array tracked_objects;
+    whycon::detection_results_array tracked_objects;
     tracked_objects.header = msg->header;
     visualization_msgs::MarkerArray marker_list;
 
@@ -49,7 +49,7 @@ void FindCircle::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
             }
 
             // temp value to hold current detection
-            circle_detection::detection_results objectsToAdd;
+            whycon::detection_results objectsToAdd;
 
             if(identify) objectsToAdd.uuid = objectArray[i].id;
             if(identify && objectsToAdd.uuid <= 0) continue;
@@ -139,7 +139,7 @@ void FindCircle::init(void) {
     image->getSaveNumber();
     subim = it.subscribe("/camera/image_rect_color", 1, &FindCircle::imageCallback, this);
     imdebug = it.advertise("/" + node_name+ "/processedimage", 0);
-    tracks_pub = nh->advertise<circle_detection::detection_results_array>("/" + node_name + "/tracking_Array", 0);
+    tracks_pub = nh->advertise<whycon::detection_results_array>("/" + node_name + "/tracking_Array", 0);
     vis_pub = nh->advertise<visualization_msgs::MarkerArray>("/" + node_name + "/rviz_marker", 0);
     ROS_DEBUG("Server running");
     ros::spin();

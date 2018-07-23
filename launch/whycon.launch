@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="target_frame" default="/base" />
+    <arg name="positions" default="/people_tracker/positions" />
+    <arg name="marker" default="/people_tracker/marker_array" />
+    <arg name="machine" default="localhost" />
+    <arg name="user" default="" />
+
+    <node pkg="whycon" type="circle_finder" name="circle_finder" output="screen">
+        <remap from="/camera/image_rect_color" to="/camera/hd/image_color" />
+        <remap from="/camera/camera_info" to="/camera/hd/camera_info" />
+
+        <param name="circle_diameter" value="0.033"/>
+        <param name="identify" value="True"/>
+    </node>
+
+</launch>
